@@ -1,0 +1,2 @@
+# WIP
+python for kids
