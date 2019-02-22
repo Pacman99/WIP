@@ -8,6 +8,8 @@ class Window:
     _width = 500
     _height = 500
 
+    _delay = 30 # in milliseconds
+
     _mousex = 0
     _mousey = 0
     _mouseclick = False
@@ -69,10 +71,11 @@ class Window:
         Window.instance.clear()
         for f in Window._frame:
             f()
-        Window.root.after(30, Window.drawFrame)
+        Window.root.after(Window._delay, Window.drawFrame)
 
     @staticmethod
-    def frame(cb):
+    def frame(cb, delay=30):
+        Window._delay = delay
         Window._frame.append(cb)
 
     def touching(id):
@@ -158,10 +161,10 @@ class WindowInstance(Frame):
     def setColor(self, c):
         self.fill = c
         self.outline = c
-    
+
     def setFill(self, f):
         self.fill = f
-    
+
     def setOutline(self, o):
         self.outline = o
 

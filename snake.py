@@ -1,100 +1,62 @@
 from apcs import *
 import random
 
-wheight = 500
-wwidth = 750
-wcent = [wheight/2, wwidth/2]
-Window.size(wwidth,wheight)
+window_height = 500
+window_width = 750
+Window.size(window_width,window_height)
 
+# To group tiny pixels and make rows and columns
+scale = 25 # 20 columns x 30 rows
+width = int(window_width / scale) #20 columns
+height = int(window_height / scale) # 30 rows
 
+# Starting position
+snake_x = int(width / 2)
+snake_y = int(height / 2)
 
-print(pong[2], pong[3])
+# food_x = int(math.random() * width)
+# food_y = int(math.random() * height)
+
+moving = "right"
+# Can't use OOP
+# lists = okay
+# 2d lists = okay
+
 
 def main():
-    #global x
-    global p1, p2, pong
+    global scale, height, width, snake_x, snake_y, moving
 
     Window.out.background("white")
-    Window.out.color("black")
-
-    x = Window.mouse.getX()
-    y = Window.mouse.getY()
-
-    speed = 10
-    pongRadius = 14
-    rectHeight = 85
-    rectWidth = 20
-
-    if Window.key.pressed("i"):
-        p1[1] -= speed
-
-    if Window.key.pressed("k"):
-        p1[1] += speed
 
     if Window.key.pressed("w"):
-        p2[1] -= speed
+        moving = "up"
 
     if Window.key.pressed("s"):
-        p2[1] += speed
+        moving = "down"
 
-    """  
-    if pong[2] > 1 and pong[2] <= 90:
-        refAngle = pong[2]
-    elif pong[2] > 90 and pong[2] <= 180:
-        refAngle = 180 - pong[2]
-    elif pong[2] > 180 and pong[2] <= 270:
-        refAngle = pong[2] -180
-    elif pong[2] > 270 and pong[2] <= 360:
-        refAngle = 360 - pong[2]
-    """
+    if Window.key.pressed("d"):
+        moving = "right"
 
-    topBorder = Window.out.rectangle(wwidth/2, 2.5, wwidth, 5)
-    botBorder = Window.out.rectangle(wwidth/2, wheight - 2.5, wwidth, 5)
+    if Window.key.pressed("a"):
+        moving = "left"
 
-    p1Goal = Window.out.rectangle(2.5, wheight/2, 5, wheight)
-    p2Goal = Window.out.rectangle(wwidth-2.5, wheight / 2, 5, wheight)
 
-    p1ID = Window.out.rectangle(p1[0], p1[1], rectWidth, rectHeight)
-    p1ID = Window.out.rectangle(p2[0], p2[1], rectWidth, rectHeight)
+    if moving == "up":
+        snake_y -= 1
+    if moving == "down":
+        snake_y += 1
+    if moving == "left":
+        snake_x -= 1
+    if moving == "right":
+        snake_x += 1
 
-    pong[0] += pong[2]
-    pong[1] += pong[3]
-    pongID = Window.out.circle(pong[0], pong[1], pongRadius)
 
-    if pongID in Window.touching(wwidth / 2, 2.5, wwidth, 5):
-        pong[3] *= -1
+    Window.out.color("black")
+    topBorder = Window.out.rectangle(window_width/2, 2.5, window_width, 5)
+    botBorder = Window.out.rectangle(window_width/2, window_height - 2.5, window_width, 5)
 
-    if pongID in Window.touching(wwidth/2, wheight - 2.5, wwidth, 5):
-        pong[3] *= -1
+    # snake = Window.out.rectangle(snake_x * scale, snake_y * scale, scale, scale)
+    # food = Window.out.rectangle(food_x * scale, food_y * scale, scale, scale)
 
-    if pongID in Window.touching(2.5, wheight/2, 5, wheight):
-        p1[2] += 1
-        pong = [wwidth / 2, wheight / 2, random.choice([-3, 3]), random.uniform(-6, 6)]
-        pong[2] *= pongSpeed
-        pong[3] *= pongSpeed
-
-    if pongID in Window.touching(wwidth-2.5, wheight / 2, 5, wheight):
-        p2[2] += 1
-        pong = [wwidth / 2, wheight / 2, random.choice([-3, 3]), random.uniform(-6, 6)]
-        pong[2] *= pongSpeed
-        pong[3] *= pongSpeed
-
-    if pongID in Window.touching(p1[0], p1[1], rectWidth, rectHeight):
-        pong[2] *= -1
-        pong[3] *= -1
-        pong[3] += random.uniform(-3, 3)
-        pong[2] += random.uniform(-2,2)
-
-    if pongID in Window.touching(p2[0], p2[1], rectWidth, rectHeight):
-        pong[2] *= -1
-        pong[3] *= -1
-        pong[3] += random.uniform(-3, 3)
-        pong[2] += random.uniform(-3, 3)
-
-    Window.out.color("grey")
-    Window.out.line(wwidth/2, 5, wwidth/2, wheight - 5)
-    Window.out.text(str(p1[2]), wwidth/2 + 20, 25)
-    Window.out.text(str(p2[2]), wwidth/2 - 20, 25)
-
-Window.frame(main)
+Window.frame(main, 100)
 Window.start()
