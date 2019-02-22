@@ -11,8 +11,7 @@ width = int(window_width / scale) #20 columns
 height = int(window_height / scale) # 30 rows
 
 # Starting position
-snake_x = int(width / 2)
-snake_y = int(height / 2)
+snake = [[int(width / 2), int(height / 2)], [int(width / 2) - 1, int(height / 2)]] #each sub array represents the position of a segment of the snake
 
 food_x = int(random.random() * width)
 food_y = int(random.random() * height)
@@ -24,7 +23,7 @@ moving = "right"
 
 
 def main():
-    global scale, height, width, snake_x, snake_y, food_x, food_y, moving
+    global scale, height, width, food_x, food_y, moving, snake
 
     Window.out.background("white")
 
@@ -41,28 +40,41 @@ def main():
         moving = "left"
 
 
-    if moving == "up":
-        snake_y -= 1
-    if moving == "down":
-        snake_y += 1
-    if moving == "left":
-        snake_x -= 1
-    if moving == "right":
-        snake_x += 1
-
-
     Window.out.color("black")
     topBorder = Window.out.rectangle(window_width/2, 2.5, window_width, 5)
     botBorder = Window.out.rectangle(window_width/2, window_height - 2.5, window_width, 5)
 
-    snake = Window.out.rectangle(snake_x * scale, snake_y * scale, scale, scale)
+    snake_box = []
+
+    for i in range(0, len(snake)):
+        snake_box.append(Window.out.rectangle(snake[i][0] * scale, snake[i][1] * scale, scale, scale))
 
     Window.out.color("red")
     food = Window.out.rectangle(food_x * scale, food_y * scale, scale, scale)
 
-    if snake in Window.touching(food):
+    last_segment_x = snake[len(snake) - 1][0]
+    last_segment_y = snake[len(snake) - 1][1]
+    # give the previous position of the frontal segmanet to the next segment
+    for row in range(1, len(snake)):
+        snake[len(snake) - row][0] = snake[len(snake) - row - 1][0]
+        snake[len(snake) - row][1] = snake[len(snake) - row - 1][1]
+
+    if snake_box[0] in Window.touching(food):
         food_x = int(random.random() * width)
         food_y = int(random.random() * height)
+        snake.append([last_segment_x, last_segment_y])
+
+    # move the head
+    if moving == "up":
+        snake[0][1] -= 1
+    if moving == "down":
+        snake[0][1] += 1
+    if moving == "left":
+        snake[0][0] -= 1
+    if moving == "right":
+        snake[0][0] += 1
+
+
 
 Window.frame(main, 100)
 Window.start()
