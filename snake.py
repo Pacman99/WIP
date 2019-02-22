@@ -11,7 +11,7 @@ width = int(window_width / scale) #20 columns
 height = int(window_height / scale) # 30 rows
 
 # Starting position
-snake = [[int(width / 2), int(height / 2)], [int(width / 2) - 1, int(height / 2)]] #each sub array represents the position of a segment of the snake
+snake = [[int(width / 2), int(height / 2)]] #each sub array represents the position of a segment of the snake
 
 food_x = int(random.random() * width)
 food_y = int(random.random() * height)
@@ -74,6 +74,9 @@ def main():
     if moving == "right":
         snake[0][0] += 1
 
+    for segment in range(1, len(snake)):
+        if snake[0][0] == snake[segment][0] and snake[0][1] == snake[segment][1]:
+            snake = [[int(width / 2), int(height / 2)]]
 
 
 Window.frame(main, 100)
