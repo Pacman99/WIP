@@ -14,8 +14,8 @@ height = int(window_height / scale) # 30 rows
 snake_x = int(width / 2)
 snake_y = int(height / 2)
 
-# food_x = int(math.random() * width)
-# food_y = int(math.random() * height)
+food_x = int(random.random() * width)
+food_y = int(random.random() * height)
 
 moving = "right"
 # Can't use OOP
@@ -24,7 +24,7 @@ moving = "right"
 
 
 def main():
-    global scale, height, width, snake_x, snake_y, moving
+    global scale, height, width, snake_x, snake_y, food_x, food_y, moving
 
     Window.out.background("white")
 
@@ -55,8 +55,14 @@ def main():
     topBorder = Window.out.rectangle(window_width/2, 2.5, window_width, 5)
     botBorder = Window.out.rectangle(window_width/2, window_height - 2.5, window_width, 5)
 
-    # snake = Window.out.rectangle(snake_x * scale, snake_y * scale, scale, scale)
-    # food = Window.out.rectangle(food_x * scale, food_y * scale, scale, scale)
+    snake = Window.out.rectangle(snake_x * scale, snake_y * scale, scale, scale)
+
+    Window.out.color("red")
+    food = Window.out.rectangle(food_x * scale, food_y * scale, scale, scale)
+
+    if snake in Window.touching(food):
+        food_x = int(random.random() * width)
+        food_y = int(random.random() * height)
 
 Window.frame(main, 100)
 Window.start()
