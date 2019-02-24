@@ -79,7 +79,11 @@ class Window:
         Window._frame.append(cb)
 
     def touching(id):
-        return Window.instance.checkTouching(id)
+        items, dbox = Window.instance.checkTouching(id)
+        x,y = Window._mousex, Window._mousey
+        if dbox[0] < x and dbox[2] > x and dbox[1] < y and dbox[3] > y:
+            items = items + ("mouse",)
+        return items
 
     class key:
         @staticmethod
@@ -194,7 +198,7 @@ class WindowInstance(Frame):
 
     def checkTouching(self, id):
         box = self.canvas.bbox(id)
-        return self.canvas.find_overlapping(box[0], box[1], box[2], box[3])
+        return self.canvas.find_overlapping(box[0], box[1], box[2], box[3]), box
 
 
     def frame(self):

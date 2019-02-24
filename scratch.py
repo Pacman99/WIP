@@ -101,7 +101,6 @@ p = [24,234,234,11]
 print(p)
 p[2] += 1000
 print(p)
-"""
 
 from tkinter import *
 def keyup(e):
@@ -116,3 +115,18 @@ frame.bind("<KeyRelease>", keyup)
 frame.pack()
 frame.focus_set()
 root.mainloop()
+"""
+from apcs import *
+
+Window.size(500,500)
+Window.out.background("white")
+
+def main():
+    rect = Window.out.rectangle(100, 150, 100, 150)
+    if "mouse" in Window.touching(rect):
+        print("mouse")
+
+Window.frame(main)
+Window.start()
+
+
