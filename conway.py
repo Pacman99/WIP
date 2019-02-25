@@ -22,8 +22,41 @@ def main():
         ic = 0
         crow = []
         for i in r:
-
-
+            count = 0
+            if not rc == 0:
+                if not ic == 0:
+                    if map[rc - 1][ic - 1]:
+                        count += 1
+                if not ic == size[0] - 1:
+                    if map[rc - 1][ic + 1]:
+                        count += 1
+                if map[rc - 1][ic]:
+                    count += 1
+            if not rc == size[1] - 1:
+                if not ic == 0:
+                    if map[rc + 1][ic - 1]:
+                        count += 1
+                if not ic == size[0] - 1:
+                    if map[rc + 1][ic + 1]:
+                        count += 1
+                if map[rc + 1][ic]:
+                    count += 1
+            if not ic == 0:
+                if map[rc][ic - 1]:
+                    count += 1
+            if not ic == size[0] - 1:
+                if map[rc][ic + 1]:
+                    count += 1
+            if map[rc][ic]:
+                if count < 2:
+                    map[rc][ic] = False
+                if count == 2 or count == 3:
+                    map[rc][ic] = True
+                if count > 3:
+                    map[rc][ic] = False
+            else:
+                if count == 3:
+                    map[rc][ic] = True
             if i:
                 Window.out.color("black")
             else:
@@ -34,26 +67,8 @@ def main():
         mapID.append(crow)
         rc += 1
 
-    if Window.mouse.clicked():
-        ic,rc = int(Window.mouse.getX()/10), int(Window.mouse.getY()/10)
-        count = 0
-        if map[ic - 1][rc - 1]:
-            count += 1
-        if map[ic][rc - 1]:
-            count += 1
-        if map[ic + 1][rc - 1]:
-            count += 1
-        if map[ic + 1][rc]:
-            count += 1
-        if map[ic + 1][rc + 1]:
-            count += 1
-        if map[ic][rc + 1]:
-            count += 1
-        if map[ic - 1][rc + 1]:
-            count += 1
-        if map[ic - 1][rc]:
-            count += 1
-        print(count)
+    #if Window.mouse.clicked():
+
 
 
 Window.frame(main)
