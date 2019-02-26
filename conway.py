@@ -3,8 +3,9 @@ from apcs import *
 
 map = []
 
-size = [50, 50]
-Window.size(size[0]*10, size[1]*10)
+size = [50,50]
+scale = 10
+Window.size(size[0]*scale, size[1]*scale)
 #Window.size(500,500)
 
 for i in range(size[0]):
@@ -17,6 +18,21 @@ def main():
 
     bgID = Window.out.background("white")
     mapID = []
+
+    if Window.mouse.clicked():
+        x,y = int(Window.mouse.getX()/scale), int(Window.mouse.getY()/scale)
+        r = 5
+        for l in range(-5,5):
+            for i in range(-5,5):
+                ny = y+l
+                nx = x+i
+                print(nx,ny)
+                if ny >= 0 and ny < size[1] and nx >= 0 and nx < size[0]:
+                    if Window.key.pressed("space"):
+                        map[ny][nx] = True
+                    else:
+                        map[ny][nx] = False
+
     rc = 0
     for r in map:
         ic = 0
@@ -61,15 +77,12 @@ def main():
                 Window.out.color("black")
             else:
                 Window.out.color("white")
-            crow.append(Window.out.square(ic*10+5, rc*10+5, 10))
+            crow.append(Window.out.square(ic*scale+(scale/2), rc*scale+(scale/2), scale))
+            #crow.append(Window.out.circle(ic * scale + (scale/2), rc * scale + (scale/2), scale)
             ic += 1
 
         mapID.append(crow)
         rc += 1
-
-    #if Window.mouse.clicked():
-
-
 
 Window.frame(main)
 Window.start()
